@@ -35,7 +35,7 @@ const ClothesListBlock = styled.div`
 
 
 
-const FrameClothesList = ({fseq}) => {
+const FrameClothesList = ({category}) => {
     const [nameVal, setNameVal] = useState('');
     const [priceVal, setPriceVal] = useState('');
     const [names, setNames] = useState(null);
@@ -61,7 +61,7 @@ const FrameClothesList = ({fseq}) => {
                 + "api/frame",
                 {
                     "apikey" : "BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ",
-                    "seq" : fseq,
+                    "seq" : category.fseq,
                     "data" : data,
                 },
             );
@@ -80,7 +80,7 @@ const FrameClothesList = ({fseq}) => {
                     "http://localhost:9090/"
                     + "api/frame?"
                     + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
-                    + "&seq=" + fseq 
+                    + "&seq=" + category.fseq
                 );
                 
                 const infolist = res.data.infolist;
@@ -101,7 +101,7 @@ const FrameClothesList = ({fseq}) => {
             setLoading(false);
         };
         fetchData();
-    }, []);
+    },  [category]);
 
     if(loading) {
         return <ClothesListBlock>대기 중...</ClothesListBlock>;

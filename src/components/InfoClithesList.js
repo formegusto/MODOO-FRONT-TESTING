@@ -38,7 +38,7 @@ const ClothesListBlock = styled.div`
     }
 `;
 
-const InfoClothesList = ({nameSeq, priceSeq}) => {
+const InfoClothesList = ({category}) => {
     const [names, setNames] = useState(null);
     const [nameVal, setNameVal] = useState('');
     const [priceVal, setPriceVal] = useState('');
@@ -58,10 +58,10 @@ const InfoClothesList = ({nameSeq, priceSeq}) => {
         let data = [];
 
         if(e.target.name === "name"){
-            seq = nameSeq;
+            seq = category.nameSeq;
             data.push(nameVal);
         } else {
-            seq = priceSeq;
+            seq = category.priceSeq;
             data.push(priceVal);
         }
 
@@ -90,7 +90,7 @@ const InfoClothesList = ({nameSeq, priceSeq}) => {
                     "http://localhost:9090/"
                     + "api/info?"
                     + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
-                    + "&seq=" + nameSeq 
+                    + "&seq=" + category.nameSeq
                 );
                 setNames(nameRes.data.datalist);
 
@@ -98,7 +98,7 @@ const InfoClothesList = ({nameSeq, priceSeq}) => {
                     "http://localhost:9090/"
                     + "api/info?"
                     + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
-                    + "&seq=" + priceSeq 
+                    + "&seq=" + category.priceSeq
                 );
                 setPrices(priceRes.data.datalist);
             } catch(e) {
@@ -107,7 +107,7 @@ const InfoClothesList = ({nameSeq, priceSeq}) => {
             setLoading(false);
         };
         fetchData();
-    }, []);
+    }, [category]);
 
     if(loading) {
         return <ClothesListBlock>대기 중...</ClothesListBlock>;
