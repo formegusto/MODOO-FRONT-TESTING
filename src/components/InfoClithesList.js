@@ -7,23 +7,28 @@ const InputItemBlock = styled.div `
     display: flex;
     flex-direction: column;
     margin-bottom: 3rem;
-    input {
-        border: 1px solid black;
-        border-radius: 1rem;
-        font-size: 1.5rem;
-    }
-    button {
-        border: 1px solid black;
-        border-radius: 1rem;
-        font-size: 1.5rem;
-        cursor: pointer;
+    .inputGrp {
+        display: flex;
+        input {
+            flex: 4;
+            border: 1px solid black;
+            border-radius: 1rem;
+            font-size: 1.5rem;
+        }
+        button {
+            flex: 1;
+            border: 1px solid black;
+            border-radius: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
     }
 `;
 
 const ClothesListBlock = styled.div`
     box-sizing: border-box;
     padding-bottom: 3rem;
-    flex: 1;
+    width: 768px;
     margin: 0 auto;
     margin-top: 2rem;
     @media screen and (max-width: 768px) {
@@ -33,13 +38,10 @@ const ClothesListBlock = styled.div`
     }
 `;
 
-
-
-const ClothesList = ({fseq}) => {
-    const [seq, setSeq] = useState(fseq);
+const InfoClothesList = ({nameSeq, priceSeq}) => {
+    const [names, setNames] = useState(null);
     const [nameVal, setNameVal] = useState('');
     const [priceVal, setPriceVal] = useState('');
-    const [names, setNames] = useState(null);
     const [prices, setPrices] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -49,17 +51,24 @@ const ClothesList = ({fseq}) => {
         } else {
             setPriceVal(e.target.value);
         }
-    });
+    }, []);
 
-    const postClick = async () => {
-        try {
-            const data = [];
+    const postClick = async (e) => {
+        let seq;
+        let data = [];
+
+        if(e.target.name === "name"){
+            seq = nameSeq;
             data.push(nameVal);
+        } else {
+            seq = priceSeq;
             data.push(priceVal);
+        }
 
+        try {
             const res = await axios.post(
                 "http://localhost:9090/"
-                + "api/frame",
+                + "api/info",
                 {
                     "apikey" : "BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ",
                     "seq" : seq,
@@ -77,27 +86,23 @@ const ClothesList = ({fseq}) => {
             setLoading(true);
 
             try {
-                const res = await axios.get(
+                const nameRes = await axios.get(
                     "http://localhost:9090/"
-                    + "api/frame?"
+                    + "api/info?"
                     + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
-                    + "&seq=" + seq 
+                    + "&seq=" + nameSeq 
                 );
-                
-                const infolist = res.data.infolist;
+                setNames(nameRes.data.datalist);
 
-                infolist.map(info => {
-                    if(info.field === "옷이름") {
-                        setNames(info.datalist);
-                    } else {
-                        setPrices(info.datalist);
-                    }
-                });
-
-                console.log(res.data);
+                const priceRes = await axios.get(
+                    "http://localhost:9090/"
+                    + "api/info?"
+                    + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
+                    + "&seq=" + priceSeq 
+                );
+                setPrices(priceRes.data.datalist);
             } catch(e) {
                 console.log(e);
-                console.log(e.data);
             };
             setLoading(false);
         };
@@ -115,15 +120,20 @@ const ClothesList = ({fseq}) => {
     return (
         <ClothesListBlock>
             <InputItemBlock>
-                <input type="text" placeholder="옷이름" name="name" value={nameVal} onChange={postChange}></input>
-                <input type="text" placeholder="옷가격" name="price" value={priceVal} onChange={postChange}></input>
-                <button type="text" onClick={postClick}>넣기</button>
+                <div className="inputGrp">
+                    <input type="text" placeholder="옷이름" name="name" value={nameVal} onChange={postChange}></input> 
+                    <button type="text" onClick={postClick} name="name">넣기</button>
+                </div>
+                <div className="inputGrp">
+                    <input type="text" placeholder="옷가격" name="price" value={priceVal} onChange={postChange}></input>
+                    <button type="text" onClick={postClick} name="click">넣기</button>
+                </div>
             </InputItemBlock>
             {names.map((name, index) => (
-                <ClothesItem key={index} name={name} price={prices[index]}/>
+                <ClothesItem key={index} name={name} price={prices[index]} />
             ))}
         </ClothesListBlock>
     );
 };
 
-export default ClothesList;
+export default InfoClothesList; 

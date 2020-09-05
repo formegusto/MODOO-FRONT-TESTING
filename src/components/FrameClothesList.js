@@ -23,7 +23,7 @@ const InputItemBlock = styled.div `
 const ClothesListBlock = styled.div`
     box-sizing: border-box;
     padding-bottom: 3rem;
-    flex: 1;
+    width: 768px;
     margin: 0 auto;
     margin-top: 2rem;
     @media screen and (max-width: 768px) {
@@ -35,8 +35,7 @@ const ClothesListBlock = styled.div`
 
 
 
-const ClothesList = ({fseq}) => {
-    const [seq, setSeq] = useState(fseq);
+const FrameClothesList = ({fseq}) => {
     const [nameVal, setNameVal] = useState('');
     const [priceVal, setPriceVal] = useState('');
     const [names, setNames] = useState(null);
@@ -49,7 +48,7 @@ const ClothesList = ({fseq}) => {
         } else {
             setPriceVal(e.target.value);
         }
-    });
+    }, []);
 
     const postClick = async () => {
         try {
@@ -62,7 +61,7 @@ const ClothesList = ({fseq}) => {
                 + "api/frame",
                 {
                     "apikey" : "BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ",
-                    "seq" : seq,
+                    "seq" : fseq,
                     "data" : data,
                 },
             );
@@ -81,7 +80,7 @@ const ClothesList = ({fseq}) => {
                     "http://localhost:9090/"
                     + "api/frame?"
                     + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
-                    + "&seq=" + seq 
+                    + "&seq=" + fseq 
                 );
                 
                 const infolist = res.data.infolist;
@@ -126,4 +125,4 @@ const ClothesList = ({fseq}) => {
     );
 };
 
-export default ClothesList;
+export default FrameClothesList;
