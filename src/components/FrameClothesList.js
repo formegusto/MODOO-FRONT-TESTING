@@ -33,8 +33,6 @@ const ClothesListBlock = styled.div`
     }
 `;
 
-
-
 const FrameClothesList = ({category}) => {
     const [nameVal, setNameVal] = useState('');
     const [priceVal, setPriceVal] = useState('');
@@ -66,6 +64,25 @@ const FrameClothesList = ({category}) => {
                 },
             );
             console.log(res.data);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    const delClick = async (idx) => {
+        try {
+            const res = await axios.delete(
+                "http://localhost:9090/"
+                + "api/frame?"
+                + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
+                + "&seq=" + category.fseq
+                + "&idx=" + idx
+            );
+
+            console.log(res);
+
+            setNames(names.filter( (n,i) => idx !== i));
+            setPrices(prices.filter( (p,i) => idx !== i));
         } catch(e) {
             console.log(e);
         }
@@ -121,7 +138,7 @@ const FrameClothesList = ({category}) => {
                 <button type="text" onClick={postClick}>넣기</button>
             </InputItemBlock>
             {names.map((name, index) => (
-                <ClothesItem key={index} name={name} price={prices[index]}/>
+                <ClothesItem key={index} idx={index} name={name} price={prices[index]} delClick={delClick}/>
             ))}
         </ClothesListBlock>
     );

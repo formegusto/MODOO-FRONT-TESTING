@@ -23,6 +23,20 @@ const categories = [
         nameSeq: '8',
         priceSeq: '9',
     },
+    {
+        name: 'theBounce',
+        text: '더바운스',
+        fseq: '3',
+        nameSeq: '10',
+        priceSeq: '11',
+    },
+    {
+        name: 'kasina',
+        text: '카시나',
+        fseq: '4',
+        nameSeq: '12',
+        priceSeq: '13',
+    },
 ]
 
 const ClothesPage = ({match}) => {

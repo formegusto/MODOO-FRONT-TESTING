@@ -39,9 +39,9 @@ const ClothesListBlock = styled.div`
 `;
 
 const InfoClothesList = ({category}) => {
-    const [names, setNames] = useState(null);
     const [nameVal, setNameVal] = useState('');
     const [priceVal, setPriceVal] = useState('');
+    const [names, setNames] = useState(null);
     const [prices, setPrices] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -130,7 +130,7 @@ const InfoClothesList = ({category}) => {
                 </div>
             </InputItemBlock>
             {names.map((name, index) => (
-                <ClothesItem key={index} name={name} price={prices[index]} />
+                <ClothesItem key={index} idx={index} name={name} price={prices[index]} />
             ))}
         </ClothesListBlock>
     );

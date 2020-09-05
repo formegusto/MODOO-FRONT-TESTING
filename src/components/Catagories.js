@@ -20,9 +20,10 @@ const Category = styled(NavLink)`
     text-decoration: none;
     color: inherit;
     padding-bottom: 0.25rem;
+    transition: .7s;
 
     &:hover {
-        color: #495057;
+        color: #22b8cf;
     }
 
     &.active {
