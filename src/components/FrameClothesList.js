@@ -85,12 +85,14 @@ const FrameClothesList = ({category}) => {
                 
                 const infolist = res.data.infolist;
 
-                infolist.map(info => {
+                infolist.map((info) => {
                     if(info.field === "옷이름") {
                         setNames(info.datalist);
                     } else {
                         setPrices(info.datalist);
                     }
+
+                    return true;
                 });
 
                 console.log(res.data);

@@ -1,22 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-
-const categories = [
-    {
-        name: "musinsa",
-        text: "무신사",
-        fseq: "1",
-        nameSeq: "1",
-        priceSeq: "2",
-    },
-    {
-        name: "WConcept",
-        text: "더블유컨셉",
-        fseq: "2",
-        nameSeq: "8",
-        priceSeq: "9",
-    },
-]
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 const CategoriesBlock = styled.div`
     display: flex;
@@ -29,7 +13,7 @@ const CategoriesBlock = styled.div`
     }
 `;
 
-const Category = styled.div`
+const Category = styled(NavLink)`
     font-size: 3rem;
     cursor: pointer;
     white-space: pre;
@@ -41,15 +25,13 @@ const Category = styled.div`
         color: #495057;
     }
 
-    ${props => 
-        props.active && css`
-            font-weight: 600;
-            border-bottom: 1rem solid #22b8cf;
-            color: #22b8cf;
-            &:hover {
-                color: #3bc9db;
-            }
-        `
+    &.active {
+        font-weight: 600;
+        border-bottom: 1rem solid #22b8cf;
+        color: #22b8cf;
+        &:hover {
+            color: #3bc9db;
+        }
     }
 
     & + & {
@@ -57,14 +39,15 @@ const Category = styled.div`
     }
 `;
 
-const Categories = ({category, onSelect}) => {
+const Categories = ({categories}) => {
     return (
         <CategoriesBlock>
             {categories.map(c => (
                 <Category 
                     key={c.name}
-                    active={category.name === c.name}
-                    onClick={() => onSelect(c)}>
+                    activeClassName="active"
+                    exact={c.name === "musinsa"}
+                    to={c.name === "musinsa" ? '/' : `/${c.name}`}>
                     {c.text}
                 </Category>
             ))}
