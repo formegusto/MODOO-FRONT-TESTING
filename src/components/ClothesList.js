@@ -27,21 +27,22 @@ const ClothesList = () => {
             setLoading(true);
 
             try {
-                const nameRes = await axios.get(
+                const res = await axios.get(
                     "http://localhost:9090/"
-                    + "api/info?"
+                    + "api/frame?"
                     + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
                     + "&seq=1" 
                 );
-                setNames(nameRes.data.datalist);
                 
-                const priceRes = await axios.get(
-                    "http://localhost:9090/"
-                    + "api/info?"
-                    + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
-                    + "&seq=2" 
-                );
-                setPrices(priceRes.data.datalist);
+                const infolist = res.data.infolist;
+
+                infolist.map(info => {
+                    if(info.field === "옷이름") {
+                        setNames(info.datalist);
+                    } else {
+                        setPrices(info.datalist);
+                    }
+                });
             } catch(e) {
                 console.log(e);
             };
