@@ -81,6 +81,44 @@ const InfoClothesList = ({category}) => {
         }
     }
 
+    const upItem = async (idx, type, upData) => {
+        if(upData !== ''){
+            try {
+                const data = [];
+                data.push(upData);
+
+                let seq;
+                if(type === 'name'){
+                   seq = category.nameSeq; 
+                } else {
+                   seq = category.priceSeq;
+                }
+
+                const res = await axios.put(
+                    "http://localhost:9090/"
+                    + "api/info",
+                    {
+                        "apikey" : "BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ",
+                        "seq" : seq,
+                        "idx" : idx,
+                        "data" : data,
+                    },
+                );
+                console.log(res.data);
+
+                if(type === 'name') {
+                    setNames(names.map((n,i) => i === idx 
+                        ? upData : n));
+                } else {
+                    setPrices(prices.map((p, i) => i === idx
+                        ? upData : p));
+                }
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    }
+
     const delClick = async (type, idx) => {
         let seq;
 
@@ -157,11 +195,11 @@ const InfoClothesList = ({category}) => {
                 </div>
                 <div className="inputGrp">
                     <input type="text" placeholder="옷가격" name="price" value={priceVal} onChange={postChange}></input>
-                    <button type="text" onClick={postClick} name="click">넣기</button>
+                    <button type="text" onClick={postClick} name="price">넣기</button>
                 </div>
             </InputItemBlock>
             {names.map((name, index) => (
-                <ClothesItem key={index} idx={index} name={name} price={prices[index]} delClick={delClick} type="info"/>
+                <ClothesItem key={index} idx={index} name={name} price={prices[index]} delClick={delClick} type="info" upItem={upItem}/>
             ))}
         </ClothesListBlock>
     );

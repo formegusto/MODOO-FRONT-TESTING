@@ -1,7 +1,7 @@
 import React from 'react';
 import Categories from '../components/Catagories';
 import FrameClothesList from '../components/FrameClothesList';
-import InfoClothesList from '../components/InfoClithesList';
+import InfoClothesList from '../components/InfoClothesList';
 import styled from 'styled-components';
 
 const ListBlock = styled.div `
