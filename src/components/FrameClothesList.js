@@ -138,7 +138,7 @@ const FrameClothesList = ({category}) => {
                 <button type="text" onClick={postClick}>넣기</button>
             </InputItemBlock>
             {names.map((name, index) => (
-                <ClothesItem key={index} idx={index} name={name} price={prices[index]} delClick={delClick}/>
+                <ClothesItem key={index} idx={index} name={name} price={prices[index]} delClick={delClick} type="frame"/>
             ))}
         </ClothesListBlock>
     );

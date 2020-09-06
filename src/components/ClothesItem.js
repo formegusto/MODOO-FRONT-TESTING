@@ -38,12 +38,48 @@ const ClothesItemBlock = styled.div `
     .contents {
         h2 {
             margin: 0;
+            button {
+                margin-left: .5rem;
+                background: white;
+                outline: none;
+                border: 1px solid transparent;
+                border-radius: .5rem;
+                font-size: 1rem;
+                cursor: pointer;
+                padding-top: .25rem;
+                padding-bottom: .25rem;
+                color: black;
+                transition: .7s;
+
+                &:hover {
+                    color: #22b8cf;
+                    border-color: #22b8cf;
+                }
+            }
         }
         p {
             margin: 0;
             line-height: 1.5;
             margin-top: 0.5rem;
             white-space: normal;
+            button {
+                margin-left: .5rem;
+                background: white;
+                outline: none;
+                border: 1px solid transparent;
+                border-radius: .5rem;
+                font-size: 1rem;
+                cursor: pointer;
+                padding-top: .25rem;
+                padding-bottom: .25rem;
+                color: black;
+                transition: .7s;
+
+                &:hover {
+                    color: #22b8cf;
+                    border-color: #22b8cf;
+                }
+            }
         }
     }
     & + & {
@@ -51,19 +87,33 @@ const ClothesItemBlock = styled.div `
     }
 `;
 
-const ClothesItem = ({idx, name, price, delClick}) => {
+const ClothesItem = ({idx, name, price, delClick, type}) => {
     return (
         <ClothesItemBlock>
+            {type === "frame" &&  
             <div className="btnGrp">
                 <button type="button" onClick={() => delClick(idx)}>
                     <AiOutlineAliwangwang/>
                 </button>
             </div>
+            }
             <div className="contents">
                 <h2>
                     {name}
+                    {type === "info" &&  
+                        <button type="button" className="toolBtn" onClick={() => delClick('name', idx)}>
+                            <AiOutlineAliwangwang/>
+                        </button>
+                    }
                 </h2>
-                <p>{price}</p>
+                <p>
+                    {price}
+                    {type === "info" &&  
+                        <button type="button" className="toolBtn" onClick={() => delClick('price', idx)}>
+                            <AiOutlineAliwangwang/>
+                        </button>
+                    }
+                </p>
             </div>
         </ClothesItemBlock>
     );

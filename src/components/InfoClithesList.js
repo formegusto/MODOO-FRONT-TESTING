@@ -81,6 +81,37 @@ const InfoClothesList = ({category}) => {
         }
     }
 
+    const delClick = async (type, idx) => {
+        let seq;
+
+        if(type === 'name') {
+            seq = category.nameSeq;
+        } else {
+            seq = category.priceSeq;
+        }
+
+        try {
+            const res = await axios.delete(
+                "http://localhost:9090/"
+                + "api/info?"
+                + "apikey=BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ"
+                + "&seq=" + seq
+                + "&idx=" + idx
+            );
+
+            console.log(res);
+
+            if(type === 'name') {
+                setNames(names.filter( (n,i) => idx !== i));
+            } else {
+                setPrices(prices.filter( (n,i) => idx !== i));
+            }
+        } catch(e) {
+            console.log(e);
+        }
+        
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -130,7 +161,7 @@ const InfoClothesList = ({category}) => {
                 </div>
             </InputItemBlock>
             {names.map((name, index) => (
-                <ClothesItem key={index} idx={index} name={name} price={prices[index]} />
+                <ClothesItem key={index} idx={index} name={name} price={prices[index]} delClick={delClick} type="info"/>
             ))}
         </ClothesListBlock>
     );
