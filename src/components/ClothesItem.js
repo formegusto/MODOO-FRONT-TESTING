@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineAliwangwang } from 'react-icons/ai';
+import { MdSettings, MdDone } from 'react-icons/md';
 
 const ClothesItemBlock = styled.div `
     display: flex;
@@ -36,6 +37,8 @@ const ClothesItemBlock = styled.div `
         }
     }
     .contents {
+        display: flex;
+        flex-flow: column;
         h2 {
             margin: 0;
             button {
@@ -55,7 +58,7 @@ const ClothesItemBlock = styled.div `
                     color: #22b8cf;
                     border-color: #22b8cf;
                 }
-            }
+            }    
         }
         p {
             margin: 0;
@@ -81,40 +84,87 @@ const ClothesItemBlock = styled.div `
                 }
             }
         }
+        input {
+                border: 1px solid black;
+                border-radius: 1rem;
+                font-size: 1.5rem;
+        }
     }
     & + & {
         margin-top: 3rem;
     }
 `;
 
-const ClothesItem = ({idx, name, price, delClick, type}) => {
+const ClothesItem = ({idx, name, price, delClick, type,upItem}) => {
+    const [mode,setMode] = useState('read');
+    const [upName, setUpName] = useState('');
+    const [upPrice, setUpPrice] = useState('');
+
+    const changeMode = (m) => {
+        if(m === 'update') {
+            setMode('update');
+        } else {
+            upItem(idx, upName, upPrice);
+            (upName !== '') &&
+                setUpName('');
+            (upPrice !== '') &&
+                setUpPrice('');
+            setMode('read');
+        }
+    }
+
+    const onChange = (e) => {
+        if(e.target.name === 'name') {
+            setUpName(e.target.value);
+        } else {
+            setUpPrice(e.target.value);
+        }
+    }
+
     return (
         <ClothesItemBlock>
-            {type === "frame" &&  
-            <div className="btnGrp">
-                <button type="button" onClick={() => delClick(idx)}>
-                    <AiOutlineAliwangwang/>
-                </button>
-            </div>
-            }
-            <div className="contents">
-                <h2>
-                    {name}
-                    {type === "info" &&  
-                        <button type="button" className="toolBtn" onClick={() => delClick('name', idx)}>
-                            <AiOutlineAliwangwang/>
-                        </button>
+                {type === "frame" &&  
+                <div className="btnGrp">
+                    { mode === 'read' ? 
+                    <button type="button" onClick={() => changeMode('update')}>
+                        <MdSettings/>
+                    </button> :
+                    <button type="button" onClick={() => changeMode('read')}>
+                        <MdDone />
+                    </button>
+                    }  
+                    <button type="button" onClick={() => delClick(idx)}>
+                        <AiOutlineAliwangwang/>
+                    </button>
+                </div>
+                } 
+                <div className="contents">
+                    {mode === 'read' ? 
+                    <h2>
+                        {name}
+                        
+                        {type === "info" &&  
+                            <button type="button" className="toolBtn" onClick={() => delClick('name', idx)}>
+                                <AiOutlineAliwangwang/>
+                            </button>
+                        }
+                    </h2>
+                    : 
+                    <input type="text" name="name" value={upName} placeholder="옷이름" onChange={onChange}></input>
                     }
-                </h2>
-                <p>
-                    {price}
-                    {type === "info" &&  
-                        <button type="button" className="toolBtn" onClick={() => delClick('price', idx)}>
-                            <AiOutlineAliwangwang/>
-                        </button>
+                    {mode === 'read' ?
+                    <p>
+                        {price}
+                        {type === "info" &&  
+                            <button type="button" className="toolBtn" onClick={() => delClick('price', idx)}>
+                                <AiOutlineAliwangwang/>
+                            </button>
+                        }
+                    </p>
+                    : 
+                    <input type="text" name="price" value={upPrice} placeholder="가격" onChange={onChange}></input>
                     }
-                </p>
-            </div>
+                </div>
         </ClothesItemBlock>
     );
 };

@@ -88,6 +88,37 @@ const FrameClothesList = ({category}) => {
         }
     }
 
+    const upItem = async (idx, upName, upPrice) => {
+        if(upName !== '' || upPrice !== ''){
+            try {
+                const data = [];
+                data.push(upName);
+                data.push(upPrice);
+
+                const res = await axios.patch(
+                    "http://localhost:9090/"
+                    + "api/frame",
+                    {
+                        "apikey" : "BggJUgfMYVCfO42glOdu1iDeSdCrR3WQ",
+                        "seq" : category.fseq,
+                        "idx" : idx,
+                        "data" : data,
+                    },
+                );
+                console.log(res.data);
+
+                (upName !== '') &&
+                    setNames(names.map((n,i) => i === idx 
+                    ? upName : n));
+                (upPrice !== '') &&
+                    setPrices(prices.map((p, i) => i === idx
+                    ? upPrice : p));
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -138,7 +169,7 @@ const FrameClothesList = ({category}) => {
                 <button type="text" onClick={postClick}>넣기</button>
             </InputItemBlock>
             {names.map((name, index) => (
-                <ClothesItem key={index} idx={index} name={name} price={prices[index]} delClick={delClick} type="frame"/>
+                <ClothesItem key={index} idx={index} name={name} price={prices[index]} delClick={delClick} type="frame" upItem={upItem}/>
             ))}
         </ClothesListBlock>
     );
